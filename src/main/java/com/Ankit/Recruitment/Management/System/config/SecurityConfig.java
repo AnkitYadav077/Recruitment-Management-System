@@ -22,7 +22,7 @@ public class SecurityConfig {
     private final UserDetailsService userDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    // Use @Lazy to break the cycle
+
     public SecurityConfig(@Lazy UserDetailsService userDetailsService,
                           @Lazy JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.userDetailsService = userDetailsService;

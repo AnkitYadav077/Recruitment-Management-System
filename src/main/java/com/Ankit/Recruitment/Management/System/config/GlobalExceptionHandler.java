@@ -1,6 +1,5 @@
 package com.Ankit.Recruitment.Management.System.config;
 
-
 import com.Ankit.Recruitment.Management.System.payload.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
