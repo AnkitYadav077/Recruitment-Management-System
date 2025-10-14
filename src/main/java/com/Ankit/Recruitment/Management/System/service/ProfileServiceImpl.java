@@ -1,4 +1,4 @@
-package com.Ankit.Recruitment.Management.System.service.impl;
+package com.Ankit.Recruitment.Management.System.service;
 
 import com.Ankit.Recruitment.Management.System.entity.Profile;
 import com.Ankit.Recruitment.Management.System.entity.User;
