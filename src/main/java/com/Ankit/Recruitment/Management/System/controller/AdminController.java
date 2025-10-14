@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class AdminController {
     private final ModelMapper modelMapper;
 
     @GetMapping("/applicants")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> getAllApplicants() {
         try {
             log.info("Fetching all applicants");
@@ -43,6 +45,7 @@ public class AdminController {
     }
 
     @GetMapping("/applicant/{applicantId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> getApplicantProfile(@PathVariable Long applicantId) {
         try {
             log.info("Fetching profile for applicant ID: {}", applicantId);

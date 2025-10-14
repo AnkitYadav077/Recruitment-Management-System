@@ -8,6 +8,7 @@ import com.Ankit.Recruitment.Management.System.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,11 +26,11 @@ public class ResumeController {
     private final ResumeProcessingService resumeProcessingService;
 
     @PostMapping("/uploadResume")
+    @PreAuthorize("hasAuthority('APPLICANT')")
     public ResponseEntity<?> uploadResume(@RequestParam("file") MultipartFile file,
                                           Authentication authentication) {
         try {
             log.info("Resume upload request received");
-
 
             String contentType = file.getContentType();
             if (!"application/pdf".equals(contentType) &&
@@ -42,16 +43,12 @@ public class ResumeController {
             User user = userService.findByEmail(email)
                     .orElseThrow(() -> new RuntimeException("User not found"));
 
-
             Profile profile = profileService.getProfileByUserId(user.getId())
                     .orElseGet(() -> profileService.createProfile(user));
 
-
             Map<String, Object> extractedData = resumeProcessingService.processResume(file);
 
-
             resumeProcessingService.updateProfileWithExtractedData(profile, extractedData);
-
 
             profile.setResumeFileAddress("resumes/" + user.getId() + "_" + file.getOriginalFilename());
 

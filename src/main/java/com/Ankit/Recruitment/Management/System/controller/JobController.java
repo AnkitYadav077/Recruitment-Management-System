@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,7 @@ public class JobController {
     private final ModelMapper modelMapper;
 
     @PostMapping("/admin/job")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> createJob(@Valid @RequestBody JobDto.CreateRequest createRequest,
                                        Authentication authentication) {
         try {
@@ -48,6 +50,7 @@ public class JobController {
     }
 
     @GetMapping("/admin/job/{jobId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> getJobWithApplicants(@PathVariable Long jobId, Authentication authentication) {
         try {
             log.info("Fetching job with applicants for job ID: {}", jobId);
@@ -77,6 +80,7 @@ public class JobController {
     }
 
     @GetMapping("/jobs")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getAllJobs(Authentication authentication) {
         try {
             log.info("Fetching all jobs for user: {}", authentication.getName());
@@ -94,6 +98,7 @@ public class JobController {
     }
 
     @GetMapping("/jobs/apply")
+    @PreAuthorize("hasAuthority('APPLICANT')")
     public ResponseEntity<?> applyForJob(@RequestParam("job_id") Long jobId, Authentication authentication) {
         try {
             String email = authentication.getName();
